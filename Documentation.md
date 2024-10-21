@@ -154,7 +154,7 @@ Source: Internal-lb-SG
 ```
 Inbound rules 2 for Internal-lb-sg : 
 ``` bash
-Type ; Custom TCP
+Type : Custom TCP
 Protocol: TCP
 Port Range: 4000
 Source: My IP
