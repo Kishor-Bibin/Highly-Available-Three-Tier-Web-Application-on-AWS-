@@ -51,7 +51,8 @@ This repo contains all the nesessary app code
 #### 1.4. Configure Routing Tables
 
 In an AWS VPC, routing tables are essential to direct traffic between subnets and internet gateways (IGWs) or NAT gateways (NAT GWs).
-1.4.1. Route Tables for Public Subnets (with Internet Gateway)
+
+#### 1.4.1. Route Tables for Public Subnets (with Internet Gateway)
 Public subnets are subnets that have direct access to the internet via an Internet Gateway (IGW). This configuration is used when instances in the subnet need to communicate directly with external networks.
 
 #### Create a Route Table for Public Subnet:
@@ -69,12 +70,15 @@ Associate the Route Table with the Public Subnet:
 
 Go to Subnet Associations under the route table.
 Choose the public subnet you wish to associate this route table with.
-1.4.2. Route Tables for Private Subnets (with NAT Gateway)
+
+### 1.4.2. Route Tables for Private Subnets (with NAT Gateway)
+
 Private subnets do not have direct access to the internet, but instances within them can access the internet via a NAT Gateway (NAT GW). This is common for instances that need to download updates or communicate outbound without being directly reachable from the internet.
 
 #### Create a Route Table for Private Subnet:
 
 Go to *VPC Dashboard > Route Tables > Create Route Table*.
+[screenshot]
 
 Name it something like Private Route Table.
 Associate the private subnet with this route table.
@@ -82,6 +86,7 @@ Add Route to the NAT Gateway:
 
 Edit the route table to add a route for internet-bound traffic.
 Destination: 0.0.0.0/0 (for all internet traffic).
+
 Target: Select the NAT Gateway created in the public subnet.
 Associate the Route Table with the Private Subnet:
 
