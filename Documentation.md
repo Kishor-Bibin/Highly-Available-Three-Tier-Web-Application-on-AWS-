@@ -24,10 +24,11 @@ Before you begin, ensure you have the following:
 To deploy this project, follow these steps:
 
 ### 0. Clone the Repository
+Open Git Bash
 
 ```bash
-git clone https://github.com/your-repo/three-tier-aws-app.git
-cd three-tier-aws-app
+git clone https://github.com/aws-samples/aws-three-tier-web-architecture-workshop.git
+cd aws-three-tier-web-architecture-workshop
 ```
 
 ### 1. Setting Up Networking
