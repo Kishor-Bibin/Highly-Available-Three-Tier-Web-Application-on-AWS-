@@ -14,8 +14,8 @@ This project implements a highly available and scalable three-tier web applicati
 Before you begin, ensure you have the following:
 - **AWS Account** with required permissions.
 - **AWS CLI** installed and configured.
-- **Terraform** (optional) for Infrastructure as Code (IaC).
 - Basic knowledge of **AWS services** (EC2, RDS, S3, VPC, etc.).
+- Basic Knowledge of **Git**
 
 ## Steps to Deploy
 
@@ -35,23 +35,58 @@ This repo contains all the nesessary app code
 ### 1. Setting Up Networking
 
 #### 1.1. Create a VPC
-```bash
-aws ec2 create-vpc --cidr-block 10.0.0.0/16
-```
 - Create a **VPC** to isolate resources with a CIDR block of 10.0.0.0/16.
+[screenshot]
 
 #### 1.2. Create Subnets
-```bash
-aws ec2 create-subnet --vpc-id <vpc-id> --cidr-block 10.0.1.0/24 --availability-zone <az>
-```
 - Create **public subnets** for web servers and **private subnets** for the application and database servers in multiple Availability Zones.
+  [Screenhot]
 
 #### 1.3. Create Internet Gateway and NAT Gateway
-- **Internet Gateway** for public-facing web servers.
-- **NAT Gateway** in a public subnet to allow private instances to access the internet.
+- Create an **Internet Gateway** for public-facing web servers and attact it to the VPC created before.
+  [screenshot]
+- Create **NAT Gateway** in a public subnet to allow private instances to access the internet.
+[Screenshot]
 
 #### 1.4. Configure Routing Tables
-- **Route Tables** for public subnets (with Internet Gateway) and private subnets (with NAT Gateway).
+
+In an AWS VPC, routing tables are essential to direct traffic between subnets and internet gateways (IGWs) or NAT gateways (NAT GWs).
+1.4.1. Route Tables for Public Subnets (with Internet Gateway)
+Public subnets are subnets that have direct access to the internet via an Internet Gateway (IGW). This configuration is used when instances in the subnet need to communicate directly with external networks.
+
+#### Create a Route Table for Public Subnet:
+
+Go to VPC *Dashboard > Route Tables > Create Route Table*.
+
+Name it something like Public Route Table.
+Associate the public subnet with this route table.
+Add Route to the Internet Gateway:
+
+Edit the route table to add a route for internet-bound traffic.
+Destination: 0.0.0.0/0 (which means all traffic).
+Target: Select the Internet Gateway (IGW) associated with the VPC.
+Associate the Route Table with the Public Subnet:
+
+Go to Subnet Associations under the route table.
+Choose the public subnet you wish to associate this route table with.
+1.4.2. Route Tables for Private Subnets (with NAT Gateway)
+Private subnets do not have direct access to the internet, but instances within them can access the internet via a NAT Gateway (NAT GW). This is common for instances that need to download updates or communicate outbound without being directly reachable from the internet.
+
+#### Create a Route Table for Private Subnet:
+
+Go to *VPC Dashboard > Route Tables > Create Route Table*.
+
+Name it something like Private Route Table.
+Associate the private subnet with this route table.
+Add Route to the NAT Gateway:
+
+Edit the route table to add a route for internet-bound traffic.
+Destination: 0.0.0.0/0 (for all internet traffic).
+Target: Select the NAT Gateway created in the public subnet.
+Associate the Route Table with the Private Subnet:
+
+Go to Subnet Associations under the route table.
+Choose the private subnet you want to associate this route table with.
 
 ### 2. Web Tier
 
@@ -148,4 +183,4 @@ This project is licensed under the MIT License.
 
 ---
 
-This README is designed to guide users through the process of deploying a highly available three-tier application on AWS. Let me know if any sections need further refinement!
+This README is designed to guide users through the process of deploying a highly available three-tier application on AWS.
