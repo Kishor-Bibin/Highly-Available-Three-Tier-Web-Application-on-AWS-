@@ -54,46 +54,60 @@ This repo contains all the nesessary app code
 
 In an AWS VPC, routing tables are essential to direct traffic between subnets and internet gateways (IGWs) or NAT gateways (NAT GWs).
 
-#### 1.4.1. Route Tables for Public Subnets (with Internet Gateway)
-Public subnets are subnets that have direct access to the internet via an Internet Gateway (IGW). This configuration is used when instances in the subnet need to communicate directly with external networks.
 
-#### Create a Route Table for Public Subnet:
 
-![Go to VPC **Dashboard > Route Tables > Create Route Table**](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/4d658c2d7afde140e05783a63ba72d843ff741d9/Images/NAT-gateway%20create.png)
+#### 1.4.1 Route Tables for Public Subnets (with Internet Gateway)
 
-Name it something like Public Route Table.
-Associate the public subnet with this route table.
-Add Route to the Internet Gateway:
+Public subnets allow instances to access the internet via an Internet Gateway (IGW). This setup is used when instances in the subnet need to communicate directly with external networks.
 
-Edit the route table to add a route for internet-bound traffic.
-Destination: 0.0.0.0/0 (which means all traffic).
-Target: Select the Internet Gateway (IGW) associated with the VPC.
-Associate the Route Table with the Public Subnet:
+### Steps to Create a Route Table for a Public Subnet
 
-Go to Subnet Associations under the route table.
-Choose the public subnet you wish to associate this route table with.
+1. **Go to the VPC Dashboard**  
+   - Navigate to **VPC Dashboard > Route Tables > Create Route Table**.
+   
+2. **Name the Route Table**  
+   - Give it a descriptive name, like `Public Route Table`.
 
-#### 1.4.2. Route Tables for Private Subnets (with NAT Gateway)
+3. **Associate the Public Subnet**  
+   - Associate the public subnet with this route table.
 
-Private subnets do not have direct access to the internet, but instances within them can access the internet via a NAT Gateway (NAT GW). This is common for instances that need to download updates or communicate outbound without being directly reachable from the internet.
+4. **Add a Route for Internet-Bound Traffic**  
+   - Edit the route table and add a route for traffic destined for the internet:
+     - **Destination**: `0.0.0.0/0` (this represents all traffic).
+     - **Target**: Select the Internet Gateway (IGW) associated with your VPC.
 
-#### Create a Route Table for Private Subnet:
+5. **Associate the Route Table with the Public Subnet**  
+   - Go to the **Subnet Associations** tab under the route table.
+   - Select the public subnet to associate it with this route table.
 
-Go to *VPC Dashboard > Route Tables > Create Route Table*.
-[screenshot]
+---
 
-Name it something like Private Route Table.
-Associate the private subnet with this route table.
-Add Route to the NAT Gateway:
+#### 1.4.2 Route Tables for Private Subnets (with NAT Gateway)
 
-Edit the route table to add a route for internet-bound traffic.
-Destination: 0.0.0.0/0 (for all internet traffic).
+Private subnets don’t have direct internet access, but instances can access the internet via a NAT Gateway (NAT GW). This is useful when instances need to communicate outbound without being accessible from the internet.
 
-Target: Select the NAT Gateway created in the public subnet.
-Associate the Route Table with the Private Subnet:
+### Steps to Create a Route Table for a Private Subnet
 
-Go to Subnet Associations under the route table.
-Choose the private subnet you want to associate this route table with.
+1. **Go to the VPC Dashboard**  
+   - Navigate to **VPC Dashboard > Route Tables > Create Route Table**.
+
+2. **Name the Route Table**  
+   - Name it something descriptive, like `Private Route Table`.
+
+3. **Associate the Private Subnet**  
+   - Associate the private subnet with this route table.
+
+4. **Add a Route for Internet-Bound Traffic via NAT Gateway**  
+   - Edit the route table and add a route for internet traffic:
+     - **Destination**: `0.0.0.0/0` (for all internet traffic).
+     - **Target**: Select the NAT Gateway created in the public subnet.
+
+5. **Associate the Route Table with the Private Subnet**  
+   - Go to the **Subnet Associations** tab under the route table.
+   - Select the private subnet to associate it with this route table.
+
+
+-
 
 #### 1.5. Configure Security Groups
 Security groups act as virtual firewalls that control inbound and outbound traffic to and from your instances. When configuring security groups for your VPC, you’ll need separate rules for instances in the public subnets and private subnets to ensure appropriate security. Below are the steps to create security groups for both public and private subnets:
