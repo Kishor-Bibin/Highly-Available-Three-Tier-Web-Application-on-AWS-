@@ -123,7 +123,7 @@ Port Range: 80
 Source: Public-SG
 ```
 
-### 2. Web Tier
+## 2. Web Tier
 
 #### 2.1. Launch EC2 Instances for Web Servers
 ```bash
@@ -142,7 +142,7 @@ sudo systemctl enable nginx
 ```
 - **Nginx** will act as the web server to route traffic to the application tier.
 
-### 3. Application Tier
+## 3. Application Tier
 
 #### 3.1. Set Up EC2 Instances for Application Layer
 - Launch EC2 instances in the private subnet, using an **application-specific AMI** or base OS like Amazon Linux 2.
@@ -159,7 +159,7 @@ aws s3 cp s3://<bucket-name>/app-code /var/www/html --recursive
 #### 3.4. Load Balancer for Application Layer
 - Create an **internal Application Load Balancer (ALB)** to distribute traffic across application servers.
 
-### 4. Database Tier
+## 4. Database Tier
 
 #### 4.1. Create Amazon RDS Instance
 - Provision an **Amazon Aurora** or **MySQL RDS** instance in the private subnets:
@@ -212,10 +212,3 @@ aws s3 rb s3://<bucket-name> --force
 - **Database Connection Failures**: Ensure proper security group rules and subnet configuration for **RDS**.
 - **Scaling Issues**: Verify the **Auto Scaling policies** and instance health checks.
 
-## License
-
-This project is licensed under the MIT License.
-
----
-
-This README is designed to guide users through the process of deploying a highly available three-tier application on AWS.
