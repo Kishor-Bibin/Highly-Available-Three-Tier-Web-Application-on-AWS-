@@ -1,6 +1,3 @@
-Sure! Here's a sample **README file** for your project based on the architecture and setup:
-
----
 
 # Highly Available Three-Tier Web Application on AWS
 
