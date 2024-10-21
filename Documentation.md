@@ -36,17 +36,18 @@ This repo contains all the nesessary app code
 
 #### 1.1. Create a VPC
 - Create a **VPC** to isolate resources with a CIDR block of 10.0.0.0/16.
-[screenshot]
+![](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/4d658c2d7afde140e05783a63ba72d843ff741d9/Images/vpc-create.png)
+![](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/4d658c2d7afde140e05783a63ba72d843ff741d9/Images/vpc-config1.png)
 
 #### 1.2. Create Subnets
 - Create **public subnets** for web servers and **private subnets** for the application and database servers in multiple Availability Zones.
-  [Screenhot]
+  ![](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/4d658c2d7afde140e05783a63ba72d843ff741d9/Images/Subnet-create.png)
 
 #### 1.3. Create Internet Gateway and NAT Gateway
 - Create an **Internet Gateway** for public-facing web servers and attact it to the VPC created before.
-  [screenshot]
+  ![](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/4d658c2d7afde140e05783a63ba72d843ff741d9/Images/IGW-create.png)
 - Create **NAT Gateway** in a public subnet to allow private instances to access the internet.
-[Screenshot]
+![](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/4d658c2d7afde140e05783a63ba72d843ff741d9/Images/NAT-gateway%20create.png)  
 
 
 #### 1.4. Configure Routing Tables
@@ -58,7 +59,7 @@ Public subnets are subnets that have direct access to the internet via an Intern
 
 #### Create a Route Table for Public Subnet:
 
-Go to VPC *Dashboard > Route Tables > Create Route Table*.
+![Go to VPC **Dashboard > Route Tables > Create Route Table**](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/4d658c2d7afde140e05783a63ba72d843ff741d9/Images/NAT-gateway%20create.png)
 
 Name it something like Public Route Table.
 Associate the public subnet with this route table.
