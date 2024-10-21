@@ -7,7 +7,7 @@ This project implements a highly available and scalable three-tier web applicati
 
 ## Architecture Diagram
 
-**Include a diagram here** showing the relationship between the web, application, and database layers, including security groups, load balancers, subnets, and other AWS resources.
+![](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/695e40e15298ff396d6abad74e0b09599d88f4a9/Images/Three-tier-Architecture%20Diagram.png)
 
 ## Prerequisites
 
