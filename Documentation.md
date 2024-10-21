@@ -107,12 +107,12 @@ Private subnets don’t have direct internet access, but instances can access th
    - Select the private subnet to associate it with this route table.
 
 
--
 
-#### 1.5. Configure Security Groups
+
+### 1.5. Configure Security Groups
 Security groups act as virtual firewalls that control inbound and outbound traffic to and from your instances. When configuring security groups for your VPC, you’ll need separate rules for instances in the public subnets and private subnets to ensure appropriate security. Below are the steps to create security groups for both public and private subnets:
 
-**1.5.1 Create a Security Group for ELB**
+#### 1.5.1 Create a Security Group for ELB
 -
 
 Go to *VPC Dashboard > Security Groups > Create Security Group*.
@@ -129,7 +129,7 @@ Port Range: 80
 Source: 0.0.0.0/0 (allows access from any IP address).
 ```
 
-**1.5.2 Create a security group for Web-tier**
+### 1.5.2 Create a security group for Web-tier
 -
 
 Name it something like web-tier-SG and associate it with the VPC
@@ -143,7 +143,7 @@ Port Range: 80
 Source: InternetFacing-SG
 ```
 
-**1.5.3 Create a security group for Internal Load Balancer**
+### 1.5.3 Create a security group for Internal Load Balancer
 -
 
 Name it something like **Internal-lb-sg** and associate it with the VPC
@@ -155,7 +155,7 @@ Protocol: Custom TCP
 Port Range: 80
 Source: Web-tier-SG
 ```
-**1.5.4 Create a security group for App-Tier**
+### 1.5.4 Create a security group for App-Tier
 -
 
 Name it something like **app-tier-sg** and associate it with the VPC
@@ -174,7 +174,7 @@ Protocol: TCP
 Port Range: 4000
 Source: My IP
 ```
-**1.5.5 Create a security group for Database Tier**
+### 1.5.5 Create a security group for Database Tier
 -
 
 Name it something like **DB-SG** and associate it with the VPC
