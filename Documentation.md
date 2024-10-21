@@ -130,7 +130,7 @@ Source: 0.0.0.0/0 (allows access from any IP address).
 ```
 
 ### 1.5.2 Create a security group for Web-tier
--
+---
 
 Name it something like web-tier-SG and associate it with the VPC
 
@@ -144,7 +144,7 @@ Source: InternetFacing-SG
 ```
 
 ### 1.5.3 Create a security group for Internal Load Balancer
--
+---
 
 Name it something like **Internal-lb-sg** and associate it with the VPC
 
@@ -175,7 +175,7 @@ Port Range: 4000
 Source: My IP
 ```
 ### 1.5.5 Create a security group for Database Tier
--
+---
 
 Name it something like **DB-SG** and associate it with the VPC
 
