@@ -48,7 +48,7 @@ This repo contains all the nesessary app code
 - Create **NAT Gateway** in a public subnet to allow private instances to access the internet.
 [Screenshot]
 
--
+
 #### 1.4. Configure Routing Tables
 
 In an AWS VPC, routing tables are essential to direct traffic between subnets and internet gateways (IGWs) or NAT gateways (NAT GWs).
@@ -96,15 +96,15 @@ Choose the private subnet you want to associate this route table with.
 
 #### 1.5. Configure Security Groups
 Security groups act as virtual firewalls that control inbound and outbound traffic to and from your instances. When configuring security groups for your VPC, you’ll need separate rules for instances in the public subnets and private subnets to ensure appropriate security. Below are the steps to create security groups for both public and private subnets:
-1.5.1. Security Group for Public Subnet Instances
-For instances in the public subnet (such as web servers), you’ll typically want to allow HTTP/HTTPS access from the internet, as well as SSH for administrative purposes.
 
-**Create a Security Group for Public Subnet**:
+**1.5.1 Create a Security Group for ELB**
+-
 
 Go to *VPC Dashboard > Security Groups > Create Security Group*.
 
-Name it something like **Public-SG** and associate it with the VPC.
-Inbound Rules for Public Subnet Security Group:
+Name it something like **InternetFacing-SG** and associate it with the VPC.
+
+Inbound Rules for External Load Balancer Security Group:
 ``` bash
 Inbound Rule 1 
 Allow HTTP (Port 80):
@@ -113,103 +113,65 @@ Protocol: TCP
 Port Range: 80
 Source: 0.0.0.0/0 (allows access from any IP address).
 ```
-**create a security group from private subnet**
-Name it something like web-tierSG and associate it with the VPC
-inbout rules for Private subnet SG:
+
+**1.5.2 Create a security group for Web-tier**
+-
+
+Name it something like web-tier-SG and associate it with the VPC
+
+Inbound rules for Web-Tier-SG:
 ``` bash
 Allow HTTP (port 80)
 Type : HTTP
 Protocol: TCP
 Port Range: 80
-Source: Public-SG
+Source: InternetFacing-SG
+```
+
+**1.5.3 Create a security group for Internal Load Balancer**
+-
+
+Name it something like **Internal-lb-sg** and associate it with the VPC
+
+Inbound rules for Internal-lb-SG : 
+``` bash
+Type : HTTP
+Protocol: Custom TCP
+Port Range: 80
+Source: Web-tier-SG
+```
+**1.5.4 Create a security group for App-Tier**
+-
+
+Name it something like **app-tier-sg** and associate it with the VPC
+
+Inbound rules for Internal-lb-sg : 
+``` bash
+Type : Custom TCP
+Protocol: TCP
+Port Range: 4000
+Source: Internal-lb-SG
+```
+Inbound rules 2 for Internal-lb-sg : 
+``` bash
+Type ; Custom TCP
+Protocol: TCP
+Port Range: 4000
+Source: My IP
+```
+**1.5.5 Create a security group for Database Tier**
+-
+
+Name it something like **DB-SG** and associate it with the VPC
+
+Inbound rules for Internal-lb-sg : 
+``` bash
+Type : Custom TCP
+Protocol: TCP
+Port Range: 3306
+Source: app-tier-sg
 ```
 
 ## 2. Web Tier
 
-#### 2.1. Launch EC2 Instances for Web Servers
-```bash
-aws ec2 run-instances --image-id <ami-id> --instance-type t2.micro --subnet-id <public-subnet-id> --key-name <key-name>
-```
-- Use an **Amazon Linux 2** or **Ubuntu** AMI for the EC2 instances hosting the web servers.
-
-#### 2.2. Configure Security Groups
-- Create a **security group** to allow inbound HTTP (port 80) and HTTPS (port 443) traffic.
-
-#### 2.3. Install and Configure Nginx
-```bash
-sudo yum install nginx -y
-sudo systemctl start nginx
-sudo systemctl enable nginx
-```
-- **Nginx** will act as the web server to route traffic to the application tier.
-
-## 3. Application Tier
-
-#### 3.1. Set Up EC2 Instances for Application Layer
-- Launch EC2 instances in the private subnet, using an **application-specific AMI** or base OS like Amazon Linux 2.
-
-#### 3.2. Configure Application Tier Security
-- Create a security group to allow **inbound traffic** only from the web tier’s security group.
-  
-#### 3.3. Application Code Deployment
-- Use **S3** to store and download the application code on your EC2 instances:
-```bash
-aws s3 cp s3://<bucket-name>/app-code /var/www/html --recursive
-```
-  
-#### 3.4. Load Balancer for Application Layer
-- Create an **internal Application Load Balancer (ALB)** to distribute traffic across application servers.
-
-## 4. Database Tier
-
-#### 4.1. Create Amazon RDS Instance
-- Provision an **Amazon Aurora** or **MySQL RDS** instance in the private subnets:
-```bash
-aws rds create-db-instance --db-instance-identifier mydb --db-instance-class db.t3.micro --engine aurora --allocated-storage 20 --master-username admin --master-user-password <password>
-```
-- Ensure Multi-AZ is enabled for high availability.
-
-#### 4.2. Database Security
-- Create a security group that only allows traffic from the **application tier’s security group** (MySQL port 3306).
-
-#### 4.3. Configure Database Subnet Group
-- Ensure the RDS instance spans across multiple subnets for high availability.
-
-### 5. Auto Scaling and Load Balancing
-
-#### 5.1. Create Auto Scaling Groups (ASG)
-- Define **Auto Scaling Groups** for both web and application tiers to automatically scale based on traffic.
-
-#### 5.2. Configure Health Checks
-- Set up **health checks** in the **load balancer** to ensure traffic is only routed to healthy instances.
-
-### 6. Security Configuration
-
-#### 6.1. IAM Roles and Policies
-- Create **IAM Roles** for your EC2 instances to allow access to **S3** and **CloudWatch**.
-  
-#### 6.2. Monitoring and Logging
-- Use **CloudWatch** to monitor the health of your infrastructure and application.
-- Enable **VPC Flow Logs** for network security monitoring.
-
-### 7. Verifying the Setup
-
-1. Access your web application via the **Elastic Load Balancer’s DNS name**.
-2. Ensure the application can access the database and properly serves requests from the web tier.
-3. Verify auto-scaling by simulating traffic.
-
-### 8. Clean Up Resources
-
-To avoid unnecessary costs, delete the resources after testing:
-```bash
-aws ec2 terminate-instances --instance-ids <instance-id>
-aws rds delete-db-instance --db-instance-identifier mydb --skip-final-snapshot
-aws s3 rb s3://<bucket-name> --force
-```
-
-## Troubleshooting
-
-- **EC2 Connectivity Issues**: Check your **security group** rules and ensure you have the right **key pair**.
-- **Database Connection Failures**: Ensure proper security group rules and subnet configuration for **RDS**.
-- **Scaling Issues**: Verify the **Auto Scaling policies** and instance health checks.
 
