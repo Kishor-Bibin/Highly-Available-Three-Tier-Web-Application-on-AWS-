@@ -60,7 +60,7 @@ In an AWS VPC, routing tables are essential to direct traffic between subnets an
 
 Public subnets allow instances to access the internet via an Internet Gateway (IGW). This setup is used when instances in the subnet need to communicate directly with external networks.
 
-### Steps to Create a Route Table for a Public Subnet
+#### Steps to Create a Route Table for a Public Subnet
 
 1. **Go to the VPC Dashboard**  
    - Navigate to **VPC Dashboard > Route Tables > Create Route Table**.
@@ -86,7 +86,7 @@ Public subnets allow instances to access the internet via an Internet Gateway (I
 
 Private subnets don’t have direct internet access, but instances can access the internet via a NAT Gateway (NAT GW). This is useful when instances need to communicate outbound without being accessible from the internet.
 
-### Steps to Create a Route Table for a Private Subnet
+#### Steps to Create a Route Table for a Private Subnet
 
 1. **Go to the VPC Dashboard**  
    - Navigate to **VPC Dashboard > Route Tables > Create Route Table**.
@@ -129,7 +129,7 @@ Port Range: 80
 Source: 0.0.0.0/0 (allows access from any IP address).
 ```
 
-### 1.5.2 Create a security group for Web-tier
+#### 1.5.2 Create a security group for Web-tier
 ---
 
 Name it something like web-tier-SG and associate it with the VPC
@@ -143,7 +143,7 @@ Port Range: 80
 Source: InternetFacing-SG
 ```
 
-### 1.5.3 Create a security group for Internal Load Balancer
+#### 1.5.3 Create a security group for Internal Load Balancer
 ---
 
 Name it something like **Internal-lb-sg** and associate it with the VPC
@@ -155,7 +155,7 @@ Protocol: Custom TCP
 Port Range: 80
 Source: Web-tier-SG
 ```
-### 1.5.4 Create a security group for App-Tier
+#### 1.5.4 Create a security group for App-Tier
 -
 
 Name it something like **app-tier-sg** and associate it with the VPC
@@ -174,7 +174,7 @@ Protocol: TCP
 Port Range: 4000
 Source: My IP
 ```
-### 1.5.5 Create a security group for Database Tier
+#### 1.5.5 Create a security group for Database Tier
 ---
 
 Name it something like **DB-SG** and associate it with the VPC
