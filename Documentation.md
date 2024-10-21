@@ -105,29 +105,24 @@ Go to *VPC Dashboard > Security Groups > Create Security Group*.
 Name it something like **Public-SG** and associate it with the VPC.
 Inbound Rules for Public Subnet Security Group:
 ``` bash
+Inbound Rule 1 
 Allow HTTP (Port 80):
 Type: HTTP
 Protocol: TCP
 Port Range: 80
 Source: 0.0.0.0/0 (allows access from any IP address).
-Allow HTTPS (Port 443):
-Type: HTTPS
-Protocol: TCP
-Port Range: 443
-Source: 0.0.0.0/0.
-Allow SSH (Port 22) (optional for administrative access):
-Type: SSH
-Protocol: TCP
-Port Range: 22
-Source: My IP (or a specific trusted IP address range for security).
-Outbound Rules for Public Subnet Security Group:
-
-Allow All Traffic:
-Type: All traffic
-Protocol: All
-Port Range: All
-Destination: 0.0.0.0/0 (allows outbound traffic to any IP).
 ```
+**create a security group from private subnet**
+Name it something like web-tierSG and associate it with the VPC
+inbout rules for Private subnet SG:
+``` bash
+Allow HTTP (port 80)
+Type : HTTP
+Protocol: TCP
+Port Range: 80
+Source: Public-SG
+```
+
 ### 2. Web Tier
 
 #### 2.1. Launch EC2 Instances for Web Servers
