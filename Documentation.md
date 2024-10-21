@@ -19,6 +19,17 @@ Before you begin, ensure you have the following:
 
 ## Steps to Deploy
 
+### Setup and Deployment
+
+To deploy this project, follow these steps:
+
+### 0. Clone the Repository
+
+```bash
+git clone https://github.com/your-repo/three-tier-aws-app.git
+cd three-tier-aws-app
+```
+
 ### 1. Setting Up Networking
 
 #### 1.1. Create a VPC
