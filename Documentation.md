@@ -37,7 +37,7 @@ This repo contains all the nesessary app code
 #### 1.1. Create a VPC
 - Create a **VPC** to isolate resources with a CIDR block of 10.0.0.0/16.
 ![](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/4d658c2d7afde140e05783a63ba72d843ff741d9/Images/vpc-create.png)
-![](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/4d658c2d7afde140e05783a63ba72d843ff741d9/Images/vpc-config1.png)
+
 
 #### 1.2. Create Subnets
 - Create **public subnets** for web servers and **private subnets** for the application and database servers in multiple Availability Zones.
