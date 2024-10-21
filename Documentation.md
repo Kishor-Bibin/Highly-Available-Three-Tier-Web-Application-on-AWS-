@@ -30,6 +30,7 @@ Open Git Bash
 git clone https://github.com/aws-samples/aws-three-tier-web-architecture-workshop.git
 cd aws-three-tier-web-architecture-workshop
 ```
+This repo contains all the nesessary app code 
 
 ### 1. Setting Up Networking
 
