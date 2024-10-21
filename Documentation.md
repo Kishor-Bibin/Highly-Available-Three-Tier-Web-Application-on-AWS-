@@ -113,7 +113,7 @@ Private subnets don’t have direct internet access, but instances can access th
 Security groups act as virtual firewalls that control inbound and outbound traffic to and from your instances. When configuring security groups for your VPC, you’ll need separate rules for instances in the public subnets and private subnets to ensure appropriate security. Below are the steps to create security groups for both public and private subnets:
 
 #### 1.5.1 Create a Security Group for ELB
--
+---
 
 Go to *VPC Dashboard > Security Groups > Create Security Group*.
 
