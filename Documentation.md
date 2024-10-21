@@ -48,6 +48,7 @@ This repo contains all the nesessary app code
 - Create **NAT Gateway** in a public subnet to allow private instances to access the internet.
 [Screenshot]
 
+-
 #### 1.4. Configure Routing Tables
 
 In an AWS VPC, routing tables are essential to direct traffic between subnets and internet gateways (IGWs) or NAT gateways (NAT GWs).
