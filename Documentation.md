@@ -71,7 +71,7 @@ Associate the Route Table with the Public Subnet:
 Go to Subnet Associations under the route table.
 Choose the public subnet you wish to associate this route table with.
 
-### 1.4.2. Route Tables for Private Subnets (with NAT Gateway)
+#### 1.4.2. Route Tables for Private Subnets (with NAT Gateway)
 
 Private subnets do not have direct access to the internet, but instances within them can access the internet via a NAT Gateway (NAT GW). This is common for instances that need to download updates or communicate outbound without being directly reachable from the internet.
 
@@ -93,6 +93,41 @@ Associate the Route Table with the Private Subnet:
 Go to Subnet Associations under the route table.
 Choose the private subnet you want to associate this route table with.
 
+#### 1.5. Configure Security Groups
+Security groups act as virtual firewalls that control inbound and outbound traffic to and from your instances. When configuring security groups for your VPC, you’ll need separate rules for instances in the public subnets and private subnets to ensure appropriate security. Below are the steps to create security groups for both public and private subnets:
+1.5.1. Security Group for Public Subnet Instances
+For instances in the public subnet (such as web servers), you’ll typically want to allow HTTP/HTTPS access from the internet, as well as SSH for administrative purposes.
+
+**Create a Security Group for Public Subnet**:
+
+Go to *VPC Dashboard > Security Groups > Create Security Group*.
+
+Name it something like **Public-SG** and associate it with the VPC.
+Inbound Rules for Public Subnet Security Group:
+``` bash
+Allow HTTP (Port 80):
+Type: HTTP
+Protocol: TCP
+Port Range: 80
+Source: 0.0.0.0/0 (allows access from any IP address).
+Allow HTTPS (Port 443):
+Type: HTTPS
+Protocol: TCP
+Port Range: 443
+Source: 0.0.0.0/0.
+Allow SSH (Port 22) (optional for administrative access):
+Type: SSH
+Protocol: TCP
+Port Range: 22
+Source: My IP (or a specific trusted IP address range for security).
+Outbound Rules for Public Subnet Security Group:
+
+Allow All Traffic:
+Type: All traffic
+Protocol: All
+Port Range: All
+Destination: 0.0.0.0/0 (allows outbound traffic to any IP).
+```
 ### 2. Web Tier
 
 #### 2.1. Launch EC2 Instances for Web Servers
