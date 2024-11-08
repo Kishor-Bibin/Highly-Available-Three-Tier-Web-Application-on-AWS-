@@ -24,6 +24,7 @@ This project demonstrates the deployment of a **highly available**, **fault-tole
 
 ## Architecture
 
+![](https://github.com/Kishor-Bibin/Highly-Available-Three-Tier-Web-Application-on-AWS-/blob/649c035a890dced071a27c6e18f76627699c541c/Images/Three-tier-Architecture%20Diagram.png)
 ### The architecture includes:
 1. **Web Layer (Public Subnet)**:
    - EC2 instances running **Nginx** web servers.
