@@ -187,6 +187,157 @@ Port Range: 3306
 Source: app-tier-sg
 ```
 
+
+
 ## 2. Web Tier
+
+The web tier will contain the EC2 instances that act as web servers, responsible for serving the frontend of the application. Here’s how to set up and configure the web tier:
+
+### 2.1 Launch EC2 Instance for Web Server
+
+1. **Go to the EC2 Dashboard**:
+   - Navigate to **EC2 > Instances > Launch Instances**.
+
+2. **Choose AMI**:
+   - Select an Amazon Linux 2 AMI (free tier eligible).
+
+3. **Choose Instance Type**:
+   - Select **t2.micro** (or another instance type as per project requirements).
+
+4. **Configure Network Settings**:
+   - Choose the VPC created earlier.
+   - Select a **Public Subnet** for the web server instance.
+   - **Enable Auto-Assign Public IP** to ensure the instance can communicate over the internet.
+
+5. **Attach Security Group**:
+   - Select the **web-tier-SG** created in Step 1.5.2.
+
+6. **Launch the Instance**:
+   - Review settings and launch the instance with a key pair for SSH access.
+
+### 2.2 Install and Configure Nginx
+
+1. **Connect to the EC2 Instance**:
+   - Use the key pair and connect via SSH:
+     ```bash
+     ssh -i "your-key-pair.pem" ec2-user@public-IP-address
+     ```
+
+2. **Install Nginx**:
+   - Update packages and install Nginx:
+     ```bash
+     sudo yum update -y
+     sudo amazon-linux-extras install nginx1 -y
+     ```
+
+3. **Configure Nginx**:
+   - Open the Nginx configuration file and point it to the **Internal Load Balancer** for backend routing:
+     ```bash
+     sudo nano /etc/nginx/nginx.conf
+     ```
+   - Update the server block to route traffic to the internal load balancer. Replace the default configuration with the load balancer’s DNS.
+
+4. **Start Nginx**:
+   - Start and enable Nginx to run on instance boot:
+     ```bash
+     sudo systemctl start nginx
+     sudo systemctl enable nginx
+     ```
+
+5. **Verify Configuration**:
+   - Open the web server’s public IP in a browser to ensure it serves content correctly.
+
+6. **Create AMI for Scaling**:
+   - After configuring, create an AMI from this instance for launching additional instances in the web tier.
+
+### 2.3 Configure Target Group and External Load Balancer
+
+1. **Create a Target Group**:
+   - Go to **EC2 > Load Balancers > Target Groups** and create a target group for the web servers.
+   - Choose **Instances** as the target type and associate it with the **public subnets**.
+
+2. **Create an External Application Load Balancer**:
+   - Go to **Load Balancers > Create Load Balancer** and choose **Application Load Balancer**.
+   - Select **Internet-facing** and associate it with the public subnets.
+   - Configure listeners and target group to route traffic from the load balancer to the web tier target group.
+
+---
+
+## 3. App Tier
+
+The application tier is responsible for hosting the backend services. This tier includes an EC2 instance configured to handle server-side code and communicate with the database tier.
+
+### 3.1 Launch EC2 Instance for Application Server
+
+1. **Go to the EC2 Dashboard**:
+   - Navigate to **EC2 > Instances > Launch Instances**.
+
+2. **Choose AMI**:
+   - Select the AMI created in Step 2.2.
+
+3. **Choose Instance Type**:
+   - Select **t2.micro** (or as per project requirements).
+
+4. **Configure Network Settings**:
+   - Choose the VPC created earlier.
+   - Select a **Private Subnet** for the app server instance.
+
+5. **Attach Security Group**:
+   - Select the **app-tier-SG** created in Step 1.5.4.
+
+6. **Launch the Instance**:
+   - Review settings and launch with a key pair.
+
+### 3.2 Install Application Dependencies
+
+1. **Connect to the EC2 Instance**:
+   - Use SSH to connect to the instance.
+
+2. **Install Node.js and Other Packages**:
+   - Install NVM, Node.js, and other necessary dependencies for the application.
+   - Install **pm2** to manage the Node.js application.
+
+3. **Configure Database Connection**:
+   - Modify the application code to connect to the database using the Aurora database endpoint.
+
+4. **Test the Application**:
+   - Run the backend code to verify connectivity to the database and check for errors.
+
+### 3.3 Create Internal Load Balancer for App Tier
+
+1. **Create a Target Group**:
+   - Go to **Target Groups** and create a target group for the app tier.
+   - Select **Instances** as the target type and associate it with the private subnets.
+
+2. **Create an Internal Load Balancer**:
+   - Go to **Load Balancers** and create an **Application Load Balancer**.
+   - Choose **Internal** and associate it with the private subnets.
+   - Configure listeners and target group for routing traffic from the web tier to the app tier.
+
+3. **Create Launch Template and Auto Scaling Group**:
+   - Use the AMI created earlier for the app tier to create a launch template.
+   - Set up an Auto Scaling Group to handle scaling based on demand.
+
+---
+
+## Final Steps and Testing
+
+After deploying all the tiers, verify the following:
+
+1. **Access the Web Application**:
+   - Use the DNS name of the external load balancer to access the application.
+
+2. **Test Database Connectivity**:
+   - Add and retrieve records to ensure database connectivity.
+
+3. **Monitor Auto Scaling**:
+   - Confirm that auto-scaling works by increasing or decreasing the traffic to see how instances adjust.
+
+4. **Clean Up**:
+   - After testing, delete all resources to avoid unnecessary costs.
+
+---
+
+
 
 
